@@ -5,7 +5,8 @@ const pool = require("../database/")
  * ************************** */
 async function countUnreadMessages(account_id) {
     try {
-      const sql = "SELECT COUNT(*) AS unread_messages FROM public.message WHERE message_to = $1 AND message_read = FALSE"
+    const sql = "SELECT COUNT(*) AS unread_messages FROM public.message WHERE message_to = $1 AND message_read = FALSE"
+    // const sql = "SELECT 1 AS unread_messages, $1 AS message_id"
       const data = await pool.query(sql, [account_id])
       return data.rows[0]
     } catch (error) {
@@ -18,7 +19,8 @@ async function countUnreadMessages(account_id) {
  * ************************** */
 async function countArchivedMessages(account_id) {
     try {
-      const sql = "SELECT COUNT(*) AS archived_messages FROM public.message WHERE message_to = $1 AND message_archived = TRUE"
+    const sql = "SELECT COUNT(*) AS archived_messages FROM public.message WHERE message_to = $1 AND message_archived = TRUE"
+    //      const sql = "SELECT 2 AS unread_messages, $1 AS message_id"
       const data = await pool.query(sql, [account_id])
       return data.rows[0]
     } catch (error) {
@@ -32,6 +34,7 @@ async function countArchivedMessages(account_id) {
 async function getInbox(account_id) {
     try {
         const sql = "SELECT * FROM public.message WHERE message_to = $1 AND message_archived = FALSE ORDER BY message_created DESC"
+        //    const sql = "SELECT 3 AS unread_messages, $1 AS message_id"
         const data = await pool.query(sql, [account_id])
         return data.rows
     } catch (error) {
@@ -65,6 +68,7 @@ async function sendMessage(
 async function getArchives(account_id) {
     try {
         const sql = "SELECT * FROM public.message WHERE message_to = $1 AND message_archived = TRUE ORDER BY message_created DESC"
+        // const sql = "SELECT 4 AS unread_messages, $1 AS message_id"
         const data = await pool.query(sql, [account_id])
         return data.rows
     } catch (error) {
